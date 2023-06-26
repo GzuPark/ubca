@@ -1,4 +1,3 @@
-import base64
 import os.path as osp
 import tempfile
 from uuid import uuid4
@@ -13,7 +12,7 @@ class QRGenerator:
         self.qr_box_size = qr_box_size
         self.img: qrcode.image.pure.PyPNGImage | None = None
         self.result: bytes | None = None
-        
+
     def _generate(self) -> None:
         qr = qrcode.QRCode(
             version=self.qr_version,
@@ -33,9 +32,10 @@ class QRGenerator:
             filename = f"{uuid4()}.png"
             filepath = osp.join(td, filename)
 
-            self.img.save(filepath)
+            with open(filepath, "wb") as f:
+                self.img.save(f)
 
             with open(filepath, "rb") as f:
-                self.result = base64.b64encode(f.read())
+                self.result = f.read()
 
         return self.result
