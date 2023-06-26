@@ -2,13 +2,11 @@ import unittest
 
 import cv2
 import numpy as np
-
 from core.qr_generator import QRGenerator
 from entity.business_card_entity import BusinessCard
 
 
 class TestQRCode(unittest.TestCase):
-
     def setUp(self) -> None:
         business_card = BusinessCard(
             last_name="John",
@@ -20,7 +18,7 @@ class TestQRCode(unittest.TestCase):
         )
 
         self.vcard = business_card.convert()
-    
+
     def test_qr_code(self):
         qr = QRGenerator(self.vcard)
         qr_img_binary = qr.run()
