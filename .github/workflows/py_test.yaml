@@ -1,0 +1,39 @@
+name: Python unit testing
+
+on:
+  push:
+    branches: [ "develop", "main" ]
+  pull_request:
+    branches: [ "develop", "main" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.11" ]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        # Upgrade pip to the latest version
+        python -m pip install --upgrade pip
+        # Install the dev dependencies specified in the requirements file
+        python -m pip install -r python/third_party/requirements.dev.txt
+        python -m pip install -r python/third_party/requirements.support.txt
+    - name: Test with unittest
+      run: |
+        # Change working directory
+        cd python
+        # Discover and run all tests in the "tests" directory
+        python -m unittest discover -v tests
