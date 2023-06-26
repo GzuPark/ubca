@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class BusinessCard():
+class BusinessCard:
     last_name: str
     first_name: str
     organization: str
@@ -16,8 +16,8 @@ class BusinessCard():
 
     def convert(self) -> str:
         vcard = "BEGIN:VCARD\nVERSION:3.0\n"
-        vcard += f"N:{self.last_name};{self.first_name};;;\n"
-        vcard += f"FN:{self.first_name} {self.last_name};\n"
+        vcard += f"N:{self.last_name};{self.first_name};;\n"
+        vcard += f"FN:{self.first_name} {self.last_name}\n"
         vcard += f"ORG:{self.organization}\n"
         vcard += f"TITLE:{self.job_title}\n"
         vcard += f"EMAIL:{self.email}\n"
